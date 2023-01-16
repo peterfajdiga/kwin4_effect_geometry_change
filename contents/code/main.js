@@ -15,14 +15,18 @@ class GeometryChangeEffect {
     }
 
     onWindowFrameGeometryChanged(window, oldGeometry) {
+        if (!window.onCurrentDesktop) {
+            return;
+        }
+
         if (window.move || window.resize) {
             return;
         }
-        
+
         if (!(window.normalWindow || window.dialog || window.modal)) {
             return;
         }
-        
+
         if (window.windowClass === "krunner krunner") {
             return;
         }
