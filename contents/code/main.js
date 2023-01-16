@@ -6,6 +6,12 @@ class GeometryChangeEffect {
         effects.windowFrameGeometryChanged.connect(
             this.onWindowFrameGeometryChanged.bind(this),
         );
+        effects.windowStartUserMovedResized.connect(
+            this.onWindowStartUserMovedResized.bind(this),
+        );
+        effects.windowFinishUserMovedResized.connect(
+            this.onWindowFinishUserMovedResized.bind(this),
+        );
 
         this.loadConfig();
     }
@@ -19,7 +25,7 @@ class GeometryChangeEffect {
             return;
         }
 
-        if (window.move || window.resize) {
+        if (window.move || window.resize || this.userResizing) {
             return;
         }
 
@@ -68,6 +74,14 @@ class GeometryChangeEffect {
                 },
             ],
         });
+    }
+
+    onWindowStartUserMovedResized(window) {
+        this.userResizing = true;
+    }
+
+    onWindowFinishUserMovedResized(window) {
+        this.userResizing = false;
     }
 }
 
