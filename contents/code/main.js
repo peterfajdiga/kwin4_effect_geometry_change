@@ -69,10 +69,6 @@ class GeometryChangeEffect {
             ],
         });
     }
-
-    restoreForceBlurState(window) {
-        window.setData(Effect.WindowForceBlurRole, null);
-    }
 }
 
 new GeometryChangeEffect();
