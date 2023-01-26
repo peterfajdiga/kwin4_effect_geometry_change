@@ -25,7 +25,7 @@ class GeometryChangeEffect {
             return;
         }
 
-        if (window.move || window.resize || this.userResizing) {
+        if (window.move || window.resize || this.userResizing || window.minimized) {
             return;
         }
 
