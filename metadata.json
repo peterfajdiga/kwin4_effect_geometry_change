@@ -1,25 +1,23 @@
 {
     "KPlugin": {
-        "Category": "Appearance",
-        "Description": "Animation for windows moved or resized by programs or scripts",
-        "EnabledByDefault": false,
-        "Id": "kwin4_effect_geometry_change",
-        "License": "GPL",
         "Name": "Geometry Change",
-        "ServiceTypes": [
-            "KWin/Effect"
-        ],
-        "Version": "1",
-        "Website": "",
+        "Description": "Animation for windows being moved or resized by programs or scripts",
+        "Category": "Appearance",
         "Authors": [
             {
                 "Email": "peter.fajdiga@gmail.com",
                 "Name": "Peter Fajdiga"
             }
         ],
+        "Id": "kwin4_effect_geometry_change",
+        "License": "GPLv3",
+        "Version": "1.0",
+        "EnabledByDefault": "false",
+        "ServiceTypes": ["KWin/Effect"]
     },
     "X-KDE-Ordering": "60",
-    "X-KDE-ParentApp": "",
+    "X-KDE-PluginKeyword": "kwin4_effect_geometry_change",
+    "X-KWin-Config-TranslationDomain": "kwin_effects",
     "X-Plasma-API": "javascript",
     "X-Plasma-MainScript": "code/main.js"
 }
