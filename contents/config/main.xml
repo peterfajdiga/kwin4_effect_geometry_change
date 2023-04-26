@@ -8,5 +8,8 @@
         <entry name="Duration" type="UInt">
             <default>250</default>
         </entry>
+        <entry name="ExcludedWindowClasses" type="String">
+            <default>krunner,yakuake</default>
+        </entry>
     </group>
 </kcfg>

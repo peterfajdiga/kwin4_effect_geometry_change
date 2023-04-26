@@ -19,6 +19,16 @@ class GeometryChangeEffect {
     loadConfig() {
         const duration = effect.readConfig("Duration", 250);
         this.duration = animationTime(duration);
+        this.excludedWindowClasses = effect.readConfig("ExcludedWindowClasses", "krunner,yakuake").split(",");
+    }
+
+    isWindowClassExluded(windowClass) {
+        for (const c of windowClass.split(" ")) {
+            if (this.excludedWindowClasses.includes(c)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     onWindowFrameGeometryChanged(window, oldGeometry) {
@@ -34,7 +44,7 @@ class GeometryChangeEffect {
             return;
         }
 
-        if (window.windowClass === "krunner krunner") {
+        if (this.isWindowClassExluded(window.windowClass)) {
             return;
         }
 

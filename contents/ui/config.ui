@@ -29,6 +29,24 @@
      </property>
     </widget>
    </item>
+   
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_ExcludedWindowClasses">
+     <property name="text">
+      <string>Excluded window classes:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="kcfg_ExcludedWindowClasses">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>
