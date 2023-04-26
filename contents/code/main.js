@@ -17,7 +17,8 @@ class GeometryChangeEffect {
     }
 
     loadConfig() {
-        this.duration = animationTime(317);
+        const duration = effect.readConfig("Duration", 250);
+        this.duration = animationTime(duration);
     }
 
     onWindowFrameGeometryChanged(window, oldGeometry) {
