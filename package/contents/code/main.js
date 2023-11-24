@@ -3,6 +3,8 @@
 class GeometryChangeEffect {
     constructor() {
         effect.configChanged.connect(this.loadConfig.bind(this));
+        effect.animationEnded.connect(this.restoreForceBlurState.bind(this));
+
         effects.windowFrameGeometryChanged.connect(
             this.onWindowFrameGeometryChanged.bind(this),
         );
@@ -20,6 +22,13 @@ class GeometryChangeEffect {
         const duration = effect.readConfig("Duration", 250);
         this.duration = animationTime(duration);
         this.excludedWindowClasses = effect.readConfig("ExcludedWindowClasses", "krunner,yakuake").split(",");
+    }
+
+    restoreForceBlurState(window) {
+        window.geometryChangeAnimationInstances--;
+        if (window.geometryChangeAnimationInstances === 0) {
+            window.setData(Effect.WindowForceBlurRole, null);
+        }
     }
 
     isWindowClassExluded(windowClass) {
@@ -55,35 +64,43 @@ class GeometryChangeEffect {
         const heightDelta = newGeometry.height - oldGeometry.height;
         const widthRatio = oldGeometry.width / newGeometry.width;
         const heightRatio = oldGeometry.height / newGeometry.height;
+        
+        const animations = [
+            {
+                type: Effect.Translation,
+                from: {
+                    value1: -xDelta - widthDelta / 2,
+                    value2: -yDelta - heightDelta / 2,
+                },
+                to: {
+                    value1: 0,
+                    value2: 0,
+                },
+            },
+            {
+                type: Effect.Scale,
+                from: {
+                    value1: widthRatio,
+                    value2: heightRatio,
+                },
+                to: {
+                    value1: 1,
+                    value2: 1,
+                },
+            },
+        ];
+
+        if (window.geometryChangeAnimationInstances === undefined) {
+            window.geometryChangeAnimationInstances = 0;
+        }
+        window.geometryChangeAnimationInstances += animations.length;
+        window.setData(Effect.WindowForceBlurRole, true);
 
         animate({
             window: window,
             duration: this.duration,
             curve: QEasingCurve.OutExpo,
-            animations: [
-                {
-                    type: Effect.Translation,
-                    from: {
-                        value1: -xDelta - widthDelta / 2,
-                        value2: -yDelta - heightDelta / 2,
-                    },
-                    to: {
-                        value1: 0,
-                        value2: 0,
-                    },
-                },
-                {
-                    type: Effect.Scale,
-                    from: {
-                        value1: widthRatio,
-                        value2: heightRatio,
-                    },
-                    to: {
-                        value1: 1,
-                        value2: 1,
-                    },
-                },
-            ],
+            animations: animations,
         });
     }
 
