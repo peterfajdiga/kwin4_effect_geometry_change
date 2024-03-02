@@ -1,4 +1,5 @@
 {
+    "KPackageStructure": "KWin/Effect",
     "KPlugin": {
         "Name": "Geometry Change",
         "Description": "Animation for windows being moved or resized by programs or scripts",
@@ -12,9 +13,10 @@
         "Id": "kwin4_effect_geometry_change",
         "License": "GPLv3",
         "Version": "1.1",
-        "EnabledByDefault": "false",
+        "EnabledByDefault": false,
         "ServiceTypes": ["KWin/Effect"]
     },
+    "X-KDE-ConfigModule": "kcm_kwin4_genericscripted",
     "X-KDE-Ordering": "60",
     "X-KDE-PluginKeyword": "kwin4_effect_geometry_change",
     "X-KWin-Config-TranslationDomain": "kwin_effects",

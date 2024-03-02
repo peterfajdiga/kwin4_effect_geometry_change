@@ -5,15 +5,10 @@ class GeometryChangeEffect {
         effect.configChanged.connect(this.loadConfig.bind(this));
         effect.animationEnded.connect(this.restoreForceBlurState.bind(this));
 
-        effects.windowFrameGeometryChanged.connect(
-            this.onWindowFrameGeometryChanged.bind(this),
-        );
-        effects.windowStartUserMovedResized.connect(
-            this.onWindowStartUserMovedResized.bind(this),
-        );
-        effects.windowFinishUserMovedResized.connect(
-            this.onWindowFinishUserMovedResized.bind(this),
-        );
+        effects.windowAdded.connect(this.manage.bind(this));
+        for (const window of effects.stackingOrder) {
+            this.manage(window);
+        }
 
         this.loadConfig();
     }
@@ -22,6 +17,18 @@ class GeometryChangeEffect {
         const duration = effect.readConfig("Duration", 250);
         this.duration = animationTime(duration);
         this.excludedWindowClasses = effect.readConfig("ExcludedWindowClasses", "krunner,yakuake").split(",");
+    }
+
+    manage(window) {
+        window.windowFrameGeometryChanged.connect(
+            this.onWindowFrameGeometryChanged.bind(this),
+        );
+        window.windowStartUserMovedResized.connect(
+            this.onWindowStartUserMovedResized.bind(this),
+        );
+        window.windowFinishUserMovedResized.connect(
+            this.onWindowFinishUserMovedResized.bind(this),
+        );
     }
 
     restoreForceBlurState(window) {
