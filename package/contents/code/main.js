@@ -53,7 +53,7 @@ class GeometryChangeEffect {
             return;
         }
 
-        if (window.move || window.resize || this.userResizing || window.minimized) {
+        if (window.move || window.resize || this.userResizing || window.minimized || !window.managed) {
             return;
         }
 
