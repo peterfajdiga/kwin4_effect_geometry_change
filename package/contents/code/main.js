@@ -20,6 +20,7 @@ class GeometryChangeEffect {
     }
 
     manage(window) {
+        window.geometryChangeCreatedTime = Date.now();
         window.windowFrameGeometryChanged.connect(
             this.onWindowFrameGeometryChanged.bind(this),
         );
@@ -64,6 +65,12 @@ class GeometryChangeEffect {
             return;
         }
 
+        const windowAgeMs = Date.now() - window.geometryChangeCreatedTime;
+        if(windowAgeMs < 10) {
+            // Some windows are moved or resized immediately after being created. We don't want to animate that.
+            return;
+        }
+
         const newGeometry = window.geometry;
         const xDelta = newGeometry.x - oldGeometry.x;
         const yDelta = newGeometry.y - oldGeometry.y;
@@ -71,7 +78,7 @@ class GeometryChangeEffect {
         const heightDelta = newGeometry.height - oldGeometry.height;
         const widthRatio = oldGeometry.width / newGeometry.width;
         const heightRatio = oldGeometry.height / newGeometry.height;
-        
+
         const animations = [
             {
                 type: Effect.Translation,
