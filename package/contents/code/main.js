@@ -53,6 +53,7 @@ class GeometryChangeEffect {
         const isUserMoveResize = window.move || window.resize || this.userResizing;
         if (
             !window.managed ||
+            !window.visible ||
             !window.onCurrentDesktop ||
             window.minimized ||
             !windowTypeSupportsAnimation ||
