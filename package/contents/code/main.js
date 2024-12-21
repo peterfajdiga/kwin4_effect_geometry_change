@@ -49,19 +49,16 @@ class GeometryChangeEffect {
     }
 
     onWindowFrameGeometryChanged(window, oldGeometry) {
-        if (!window.onCurrentDesktop) {
-            return;
-        }
-
-        if (window.move || window.resize || this.userResizing || window.minimized || !window.managed) {
-            return;
-        }
-
-        if (!(window.normalWindow || window.dialog || window.modal)) {
-            return;
-        }
-
-        if (this.isWindowClassExluded(window.windowClass)) {
+        const windowTypeSupportsAnimation = window.normalWindow || window.dialog || window.modal;
+        const isUserMoveResize = window.move || window.resize || this.userResizing;
+        if (
+            !window.managed ||
+            !window.onCurrentDesktop ||
+            window.minimized ||
+            !windowTypeSupportsAnimation ||
+            isUserMoveResize ||
+            this.isWindowClassExluded(window.windowClass)
+        ) {
             return;
         }
 
