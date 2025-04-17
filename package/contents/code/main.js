@@ -69,7 +69,10 @@ class GeometryChangeEffect {
         }
 
         const windowAgeMs = Date.now() - window.geometryChangeCreatedTime;
-        if(windowAgeMs < 10) {
+        if (windowAgeMs < 0) {
+            // May happen after time zone change. Let's fix the created time, so it's not in the future.
+            window.geometryChangeCreatedTime = Date.now();
+        } else if(windowAgeMs < 10) {
             // Some windows are moved or resized immediately after being created. We don't want to animate that.
             return;
         }
