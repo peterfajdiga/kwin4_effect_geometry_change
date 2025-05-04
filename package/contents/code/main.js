@@ -6,9 +6,7 @@ class GeometryChangeEffect {
         effect.animationEnded.connect(this.restoreForceBlurState.bind(this));
 
         effects.windowAdded.connect(this.manage.bind(this));
-        for (const window of effects.stackingOrder) {
-            this.manage(window);
-        }
+        effects.stackingOrder.forEach(this.manage);
 
         this.loadConfig();
     }
@@ -43,12 +41,7 @@ class GeometryChangeEffect {
     }
 
     isWindowClassExluded(windowClass) {
-        for (const c of windowClass.split(" ")) {
-            if (this.excludedWindowClasses.includes(c)) {
-                return true;
-            }
-        }
-        return false;
+        return windowClass.split(" ").some(part => this.excludedWindowClasses.includes(part));
     }
 
     onWindowFrameGeometryChanged(window, oldGeometry) {
