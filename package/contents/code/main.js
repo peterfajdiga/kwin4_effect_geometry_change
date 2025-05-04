@@ -99,10 +99,7 @@ class GeometryChangeEffect {
                 },
             },
         ];
-
-        if (window.geometryChangeAnimationInstances === undefined) {
-            window.geometryChangeAnimationInstances = 0;
-        }
+        window.geometryChangeAnimationInstances = window.geometryChangeAnimationInstances ?? 0;
         window.geometryChangeAnimationInstances += animations.length;
         window.setData(Effect.WindowForceBlurRole, true);
 
