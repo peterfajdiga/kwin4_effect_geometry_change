@@ -5,8 +5,9 @@ class GeometryChangeEffect {
         effect.configChanged.connect(this.loadConfig.bind(this));
         effect.animationEnded.connect(this.restoreForceBlurState.bind(this));
 
-        effects.windowAdded.connect(this.manage.bind(this));
-        effects.stackingOrder.forEach(this.manage);
+        const manageFn = this.manage.bind(this);
+        effects.windowAdded.connect(manageFn);
+        effects.stackingOrder.forEach(manageFn);
 
         this.loadConfig();
     }
