@@ -18,7 +18,11 @@ class GeometryChangeEffect {
     }
 
     manage(window) {
-        window.geometryChangeCreatedTime = Date.now();
+        window.geometryChangeData = {
+            createdTime: Date.now(),
+            animationInstances: 0,
+            maximizedStateAboutToChange: false,
+        };
         window.windowFrameGeometryChanged.connect(
             this.onWindowFrameGeometryChanged.bind(this),
         );
@@ -34,8 +38,8 @@ class GeometryChangeEffect {
     }
 
     restoreForceBlurState(window) {
-        window.geometryChangeAnimationInstances--;
-        if (window.geometryChangeAnimationInstances === 0) {
+        window.geometryChangeData.animationInstances--;
+        if (window.geometryChangeData.animationInstances === 0) {
             window.setData(Effect.WindowForceBlurRole, null);
         }
     }
@@ -47,8 +51,8 @@ class GeometryChangeEffect {
     onWindowFrameGeometryChanged(window, oldGeometry) {
         const windowTypeSupportsAnimation = window.normalWindow || window.dialog || window.modal;
         const isUserMoveResize = window.move || window.resize || this.userResizing;
-        const maximizationChange = window.geometryChangeMaximizedStateAboutToChange === true;
-        delete window.geometryChangeMaximizedStateAboutToChange;
+        const maximizationChange = window.geometryChangeData.maximizedStateAboutToChange;
+        window.geometryChangeData.maximizedStateAboutToChange = false;
         if (
             !window.managed ||
             !window.visible ||
@@ -61,8 +65,11 @@ class GeometryChangeEffect {
             return;
         }
 
-        const windowAgeMs = Date.now() - window.geometryChangeCreatedTime;
-        if(windowAgeMs < 10) {
+        const windowAgeMs = Date.now() - window.geometryChangeData.createdTime;
+        if (windowAgeMs < 0) {
+            // May happen after time zone change. Let's fix the created time, so it's not in the future.
+            window.geometryChangeData.createdTime = Date.now();
+        } else if(windowAgeMs < 10) {
             // Some windows are moved or resized immediately after being created. We don't want to animate that.
             return;
         }
@@ -99,8 +106,7 @@ class GeometryChangeEffect {
                 },
             },
         ];
-        window.geometryChangeAnimationInstances = window.geometryChangeAnimationInstances ?? 0;
-        window.geometryChangeAnimationInstances += animations.length;
+        window.geometryChangeData.animationInstances += animations.length;
         window.setData(Effect.WindowForceBlurRole, true);
 
         animate({
@@ -112,7 +118,7 @@ class GeometryChangeEffect {
     }
 
     onWindowMaximizedStateAboutToChange(window, horizontal, vertical) {
-        window.geometryChangeMaximizedStateAboutToChange = true;
+        window.geometryChangeData.maximizedStateAboutToChange = true;
     }
 
     onWindowStartUserMovedResized(window) {
