@@ -107,6 +107,7 @@ class GeometryChangeEffect {
                 },
             },
         ];
+
         window.geometryChangeData.animationInstances += animations.length;
         window.setData(Effect.WindowForceBlurRole, true);
 
