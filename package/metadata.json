@@ -2,7 +2,9 @@
     "KPackageStructure": "KWin/Effect",
     "KPlugin": {
         "Name": "Geometry Change",
+        "Name[nl]": "Afmetingen aanpassen",
         "Description": "Animation for windows being moved or resized by programs or scripts",
+        "Description[nl]": "Toon een animatie als een venster wordt verplaatst of van grootte wijzigt door een programma of script"
         "Category": "Appearance",
         "Authors": [
             {
