@@ -9,4 +9,4 @@ uninstall:
 	kpackagetool6 --type=KWin/Effect -r kwin4_effect_geometry_change
 
 package:
-	tar -czf ./kwin4_effect_geometry_change_${subst .,_,${VERSION}}.tar.gz ./package
+	tar -czf ./kwin4_effect_geometry_change_${subst .,_,${VERSION}}.tar.gz ./package --transform s/package/kwin4_effect_geometry_change/
