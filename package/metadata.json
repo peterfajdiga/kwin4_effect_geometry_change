@@ -16,7 +16,7 @@
         ],
         "Id": "kwin4_effect_geometry_change",
         "License": "GPLv3",
-        "Version": "1.4",
+        "Version": "1.5",
         "EnabledByDefault": false,
         "ServiceTypes": ["KWin/Effect"]
     },
