@@ -16,6 +16,7 @@ class GeometryChangeEffect {
         const duration = effect.readConfig("Duration", 250);
         this.duration = animationTime(duration);
         this.excludedWindowClasses = effect.readConfig("ExcludedWindowClasses", "krunner,yakuake").split(",");
+        this.crossFade = effect.readConfig("CrossFade", false);
     }
 
     manage(window) {
@@ -107,6 +108,14 @@ class GeometryChangeEffect {
                 },
             },
         ];
+
+        if (this.crossFade) {
+            animations.push({
+                type: Effect.CrossFadePrevious,
+                from: 0,
+                to: 1,
+            });
+        }
 
         window.geometryChangeData.animationInstances += animations.length;
         window.setData(Effect.WindowForceBlurRole, true);
