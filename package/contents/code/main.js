@@ -52,17 +52,20 @@ class GeometryChangeEffect {
 
     onWindowFrameGeometryChanged(window, oldGeometry) {
         const windowTypeSupportsAnimation = window.normalWindow || window.dialog || window.modal;
-        const isUserMoveResize = window.move || window.resize || this.userResizing;
+        const isUserMoveResize = (window.move || window.resize) && this.userResizing;
         const maximizationChange = window.geometryChangeData.maximizedStateAboutToChange;
         window.geometryChangeData.maximizedStateAboutToChange = false;
         if (
-            !window.managed ||
-            !window.visible ||
-            !window.onCurrentDesktop ||
-            window.minimized ||
-            !windowTypeSupportsAnimation ||
-            isUserMoveResize && !maximizationChange ||
-            this.isWindowClassExluded(window.windowClass)
+            (
+                !window.managed ||
+                !window.visible ||
+                !window.onCurrentDesktop ||
+                window.minimized ||
+                !windowTypeSupportsAnimation ||
+                isUserMoveResize ||
+                this.isWindowClassExluded(window.windowClass)
+            )
+            && !maximizationChange
         ) {
             return;
         }
