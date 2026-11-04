@@ -24,6 +24,7 @@ class GeometryChangeEffect {
             createdTime: Date.now(),
             animationInstances: 0,
             maximizedStateAboutToChange: false,
+            wasFullScreen: window.fullScreen,
         };
         window.windowFrameGeometryChanged.connect(
             this.onWindowFrameGeometryChanged.bind(this),
@@ -55,7 +56,10 @@ class GeometryChangeEffect {
         const isUserMoveResize = window.move || window.resize || this.userResizing;
         const maximizationChange = window.geometryChangeData.maximizedStateAboutToChange;
         window.geometryChangeData.maximizedStateAboutToChange = false;
+        const fullScreenChange = window.fullScreen || window.geometryChangeData.wasFullScreen;
+        window.geometryChangeData.wasFullScreen = window.fullScreen;
         if (
+            fullScreenChange ||
             !window.managed ||
             !window.visible ||
             !window.onCurrentDesktop ||
